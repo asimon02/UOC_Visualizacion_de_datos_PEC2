@@ -1,24 +1,1543 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Tres tecnicas de visualizacion de datos: scatterplot, Icon Chart y Tile Grid Map. PEC 2 UOC.">
-<title>PEC 2 - Tres tecnicas de visualizacion</title>
-<style>
-:root{--ink:#182a3a;--muted:#5c6c78;--line:#d8e0e5;--paper:#f4f7f8;--card:#fff;--blue:#187b91;--green:#23856d;--orange:#d47c39;--navy:#183d59;--shadow:0 14px 36px #183d5912}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:#126d84;text-underline-offset:3px}header{background:var(--navy);color:white;padding:48px max(24px,calc((100vw - 1120px)/2)) 38px}.eyebrow{letter-spacing:.14em;text-transform:uppercase;font-weight:700;font-size:.76rem;color:#9dd5dc}h1{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1.02;max-width:850px;margin:.5rem 0 1rem}header p{max-width:700px;color:#dce9ee;font-size:1.1rem;margin:.4rem 0}.meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:22px;font-size:.9rem;color:#cfdee5}.nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3}.nav div{max-width:1120px;margin:auto;padding:12px 20px;display:flex;gap:22px;flex-wrap:wrap}.nav a{text-decoration:none;font-size:.9rem;font-weight:700}main{max-width:1120px;padding:28px 20px 80px;margin:auto}.intro{max-width:820px;margin:0 auto 30px;text-align:center;color:var(--muted)}.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,4vw,42px);margin:22px 0;box-shadow:var(--shadow)}.section-kicker{font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);font-weight:800}.panel h2{font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.1;margin:.3rem 0 .6rem}.lede{font-size:1.08rem;color:var(--muted);max-width:780px}.chart-wrap{margin:24px 0;background:#f8fafb;border-radius:16px;border:1px solid #e6ecef;padding:12px}.chart-wrap svg{width:100%;height:auto;display:block}.chart-caption{font-size:.88rem;color:var(--muted);margin:10px 4px 2px}.legend{display:flex;gap:12px;flex-wrap:wrap;margin:8px 3px}.legend span{font-size:.86rem;color:#445664;display:inline-flex;align-items:center;gap:6px}.swatch{width:11px;height:11px;border-radius:50%;display:inline-block}.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:22px}.fact{padding:16px;background:#f6f9fa;border-radius:12px;border-left:3px solid var(--blue)}.fact b{display:block;margin-bottom:5px}.fact p{margin:0;color:#52636f}.small{font-size:.9rem;color:var(--muted)}.bigstat{font-size:clamp(2.6rem,6vw,4rem);font-weight:800;letter-spacing:-.04em;color:var(--green);line-height:1}.icon-grid{display:grid;grid-template-columns:repeat(10,minmax(19px,1fr));gap:8px;max-width:740px;margin:24px auto 12px}.unit{aspect-ratio:1;color:#ced8dc;display:grid;place-items:center}.unit.on{color:#23856d}.unit svg{width:100%;height:100%;max-width:42px;max-height:42px;overflow:visible}.gridmap{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(5,96px);gap:8px;max-width:850px;margin:22px auto}.tile{border-radius:11px;padding:8px;color:white;display:flex;flex-direction:column;justify-content:space-between;box-shadow:inset 0 0 0 1px #ffffff52;min-width:0}.tile span{font-size:.76rem;line-height:1.15;font-weight:700}.tile b{font-size:1rem}.tile.t0{background:#d5e8e4;color:#193e48}.tile.t1{background:#a7d4c9;color:#193e48}.tile.t2{background:#65b3a0;color:#113f43}.tile.t3{background:#328a81}.tile.t4{background:#174e63}.tilekey{display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem;color:#52636f}.tilekey span{display:inline-flex;align-items:center;gap:5px}.tilekey i{width:14px;height:14px;border-radius:4px}.callout{border-left:4px solid var(--orange);padding:12px 16px;background:#fff7f0;border-radius:0 10px 10px 0;color:#5c4a3d;margin:16px 0}.source{font-size:.86rem;color:#60717d;margin-top:14px}.footer{padding:26px;text-align:center;color:#667782;font-size:.86rem}
-@media(max-width:680px){header{padding-top:34px}.facts{grid-template-columns:1fr}.gridmap{grid-template-rows:repeat(5,68px);gap:5px}.tile{padding:5px;border-radius:7px}.tile span{font-size:.61rem}.tile b{font-size:.8rem}.icon-grid{gap:5px}.nav div{gap:12px}.chart-wrap{padding:5px}}
-</style></head><body>
-<header><div class="eyebrow">Visualizacion de datos - Master Universitario en Ciencia de Datos - UOC</div><h1>Tres tecnicas, tres formas de mirar los datos</h1><p>PEC 2 - Scatterplot, Icon Chart y Tile Grid Map</p><div class="meta"><span>Presenta: <b>[NOMBRE Y APELLIDOS]</b></span><span>Fecha de publicacion: 30 de octubre de 2026</span><span>Creditos: diseno y desarrollo propios; fuentes enlazadas en cada visualizacion</span></div></header>
-<nav class="nav"><div><a href="#scatter">01 Scatterplot</a><a href="#icon">02 Icon Chart</a><a href="#tile">03 Tile Grid Map</a></div></nav>
-<main><p class="intro">Tres visualizaciones pequenas con datos abiertos. Cada diseno parte de la estructura de los datos y de una pregunta concreta; el grafico facilita la comparacion, pero no sustituye la interpretacion.</p>
-<section id="scatter" class="panel"><div class="section-kicker">Tecnica 1 - relacion entre variables</div><h2>Scatterplot</h2><p class="lede">¿Se asocia una renta nacional mas alta con una esperanza de vida mayor? Cada punto representa un pais en 2007.</p><div class="chart-wrap"><div id="scatterChart"></div><div id="scatterLegend" class="legend"></div><p class="chart-caption">PIB per capita (dolares internacionales, escala logaritmica) frente a esperanza de vida. Pasa el cursor por cada punto para consultar el pais y los valores.</p></div><div class="facts"><div class="fact"><b>Que es y como funciona</b><p>Ubica observaciones como puntos mediante dos variables cuantitativas: X y Y. La nube permite reconocer asociacion, direccion, forma, agrupaciones y valores atipicos. Puede anadirse color para una categoria; una correlacion no prueba causalidad.</p></div><div class="fact"><b>Origen y evolucion</b><p>John F. W. Herschel ya represento pares de medidas astronomicas en 1833. Francis Galton amplio y popularizo el uso de diagramas de puntos para estudiar relaciones y correlacion en el siglo XIX.</p></div><div class="fact"><b>Datos adecuados y limites</b><p>Una fila por entidad y dos medidas numericas comparables. Unas pocas observaciones sirven para mostrar puntos individuales; para detectar patron conviene una muestra mayor. Con muchos puntos aparece solapamiento: usar transparencia, muestreo, agregacion o densidad. La escala logaritmica ayuda aqui a mostrar paises con PIB muy desigual.</p></div><div class="fact"><b>Aplicaciones habituales</b><p>Exploracion de correlaciones, control de calidad, comparacion de grupos, deteccion de atipicos y diagnostico de modelos. Audiencia: estudiantes y publico interesado en desigualdad y desarrollo.</p></div></div><div class="callout"><b>Lectura:</b> los paises de mayor PIB per capita tienden a situarse tambien en valores mas altos de esperanza de vida, aunque la dispersion muestra que la asociacion no es perfecta. El grafico no establece que el PIB cause mayor longevidad.</div><p class="source">Datos: <a href="https://github.com/plotly/datasets/blob/master/gapminderDataFiveYear.csv">Gapminder, conjunto distribuido por Plotly</a> (seleccion del ano 2007). Fuente metodologica: <a href="https://www.data-to-viz.com/graph/scatter.html">From Data to Viz</a> y <a href="https://www.sci.utah.edu/~kpotter/Library/Papers/friendly%3A2005%3AEODS/index.html">Friendly & Denis, historia del scatterplot</a>.</p></section>
-<section id="icon" class="panel"><div class="section-kicker">Tecnica 2 - parte de un total</div><h2>Icon Chart</h2><p class="lede">En 2024, mas de la mitad de la electricidad generada en Espana procedio de fuentes renovables.</p><div style="display:flex;gap:24px;align-items:end;flex-wrap:wrap;margin-top:18px"><div class="bigstat">56,8%</div><div style="padding-bottom:7px"><b>de la generacion electrica fue renovable</b><br><span class="small">Espana - 2024 - Red Electrica</span></div></div><div id="iconGrid" class="icon-grid" role="img" aria-label="Matriz de cien unidades: 57 verdes y 43 grises representan, redondeado, 56,8 por ciento renovable y 43,2 por ciento no renovable"></div><div class="legend"><span><i class="swatch" style="background:#23856d;border-radius:3px"></i>Renovable - 56,8% (57 iconos redondeados)</span><span><i class="swatch" style="background:#ced8dc;border-radius:3px"></i>No renovable - 43,2% (43 iconos redondeados)</span></div><p class="chart-caption">Cada icono representa un punto porcentual de 100; como se muestran unidades enteras, la matriz redondea 56,8 a 57. La cifra exacta aparece arriba.</p><div class="facts"><div class="fact"><b>Que es y como funciona</b><p>Tambien llamado pictograma, pictografico o unit chart. Repite simbolos de igual tamano; cada simbolo representa una unidad o una cantidad fija. El color distingue partes del total. Aqui 100 iconos forman una matriz 100% y verde representa el porcentaje renovable.</p></div><div class="fact"><b>Origen y autoria</b><p>No existe un autor unico del formato actual. Su antecedente moderno mas influyente es el sistema ISOTYPE, creado en Viena en los anos veinte por Otto Neurath y desarrollado con Marie Neurath y el artista Gerd Arntz para explicar estadisticas mediante simbolos repetidos.</p></div><div class="fact"><b>Datos adecuados y limites</b><p>Frecuencias, porcentajes y pocas categorias con un denominador explicito. Conviene mantener los iconos ordenados y simples. Es mas eficaz para proporciones redondeables que para muchas categorias o valores de gran magnitud; contar y comparar con precision es mas lento que con una barra.</p></div><div class="fact"><b>Aplicaciones habituales</b><p>Comunicacion publica de proporciones, riesgos, encuestas, salud y consumo. Audiencia: publico general; el simbolo familiar hace memorable el reparto. La limitacion aqui es el redondeo visual, compensado con el dato exacto.</p></div></div><div class="callout"><b>Objetivo:</b> que la audiencia perciba rapidamente que la generacion renovable ya supera la mitad, sin ocultar el 43,2% restante. El Icon Chart hace visible el todo y la parte; la etiqueta numerica conserva la precision.</div><p class="source">Dato: <a href="https://www.sistemaelectrico-ree.es/es/2024/informe-del-sistema-electrico/generacion/generacion-de-energia-electrica/generacion-renovable-de-energia-electrica">Red Electrica, Informe del Sistema Electrico 2024</a>. Antecedente ISOTYPE: <a href="https://isotyperevisited.org/2012/08/introduction.php">Isotype Revisited</a>. Principios y limites de los unit charts: <a href="https://eprints.whiterose.ac.uk/id/eprint/141931/10/Lonsdale%26Lonsdale_2019_Design2Inform_InformationVisualisation.pdf">Lonsdale & Lonsdale, Design2Inform</a>.</p></section>
-<section id="tile" class="panel"><div class="section-kicker">Tecnica 3 - geografia en celdas comparables</div><h2>Tile Grid Map</h2><p class="lede">La poblacion de las comunidades y ciudades autonomas de Espana, con un tile del mismo tamano para cada territorio.</p><div class="gridmap" id="tileMap" role="img" aria-label="Mapa esquematico en cuadricula de Espana con la poblacion por comunidad autonoma en 2025"></div><div class="tilekey"><span><i style="background:#d5e8e4"></i>&lt;0,5 M</span><span><i style="background:#a7d4c9"></i>0,5–1 M</span><span><i style="background:#65b3a0"></i>1.2 M</span><span><i style="background:#328a81"></i>2.4 M</span><span><i style="background:#174e63"></i>&gt;4 M habitantes</span></div><p class="chart-caption">Diseno esquematico con orientacion aproximada norte-sur y este-oeste. Cada celda representa una comunidad o ciudad autonoma; el color codifica la poblacion y el rotulo la muestra en millones.</p><div class="facts"><div class="fact"><b>Que es y como funciona</b><p>Reemplaza cada region geografica por una celda geometrica uniforme, normalmente cuadrada o hexagonal. La celda conserva la identidad y una ubicacion aproximada; color u otras marcas codifican el dato. No representa el area real del territorio.</p></div><div class="fact"><b>Origen y evolucion</b><p>Es una familia de mapas tematicos y cartogramas, sin una persona inventora unica. Su uso editorial se extendio para dar visibilidad a regiones pequenas. McNeill y Hale (2017) formalizaron algoritmos para generar y comparar tile maps a partir de geometrias.</p></div><div class="fact"><b>Datos adecuados y limites</b><p>Dato cuantitativo agregado por region mas un identificador geografico y una asignacion de celda. Funciona mejor con una cantidad moderada de unidades con nombre conocido; aqui son 19. No hay un maximo fijo, pero muchas celdas o rotulos pequenos reducen legibilidad. La cuadricula deforma distancias, formas y relaciones de vecindad; la posicion debe explicarse.</p></div><div class="fact"><b>Aplicaciones habituales</b><p>Comparar indicadores por territorios, elecciones, poblacion, salud o resultados deportivos cuando un mapa real deja regiones pequenas invisibles. Audiencia: personas que conocen la geografia espanola pero necesitan comparar magnitudes regionales.</p></div></div><div class="callout"><b>Lectura:</b> Madrid, Cataluna, Andalucia y la Comunitat Valenciana concentran los tiles de poblacion mas alta; Ceuta, Melilla y La Rioja se ven con la misma superficie que Andalucia, aunque su poblacion es muy distinta. La cuadricula refuerza la comparacion por region, y pierde precision de forma y distancia.</div><p class="source">Datos: <a href="https://datos.gob.es/en/catalogo/ea0042823-poblacion-segun-comunidad-autonoma-y-provincia-y-sexo-identificador-api-67988">INE, Poblacion por comunidad autonoma, provincia y sexo (tabla 67988)</a>, ano 2025. Investigacion: <a href="https://diglib.eg.org/items/696be9eb-39cf-4b0c-9f64-28f1cf51ee5b">McNeill & Hale, “Generating Tile Maps” (2017)</a> y <a href="https://blog.apps.npr.org/2015/05/11/hex-tile-maps.html">NPR Visuals, diseno de hex tile maps</a>.</p></section>
-<section class="panel"><div class="section-kicker">Creditos y nota de metodo</div><h2>Acerca de esta pagina</h2><p>Visualizaciones originales realizadas para la PEC 2 de Visualizacion de Datos, Master Universitario en Ciencia de Datos de la UOC. La pagina presenta usos introductorios; las definiciones y limitaciones se resumen a partir de las fuentes enlazadas. Datos descargados y seleccionados en formato abierto: Gapminder/Plotly, Red Electrica e INE.</p><p class="small">Presenta: [NOMBRE Y APELLIDOS] - Publicacion: 30/10/2026. El texto distingue el valor original de la codificacion aproximada en el Icon Chart y advierte que la cuadricula regional no es un mapa geografico de precision metrica.</p></section></main><div class="footer">PEC 2 - Visualizacion de datos - UOC - 2026</div>
-<script>
-const DATA={"scatter":[{"country":"Afghanistan","continent":"Asia","life":43.828,"gdp":974.5803384},{"country":"Albania","continent":"Europe","life":76.423,"gdp":5937.029526},{"country":"Algeria","continent":"Africa","life":72.301,"gdp":6223.367465},{"country":"Angola","continent":"Africa","life":42.731,"gdp":4797.231267},{"country":"Argentina","continent":"Americas","life":75.32,"gdp":12779.37964},{"country":"Australia","continent":"Oceania","life":81.235,"gdp":34435.36744},{"country":"Austria","continent":"Europe","life":79.829,"gdp":36126.4927},{"country":"Bahrain","continent":"Asia","life":75.635,"gdp":29796.04834},{"country":"Bangladesh","continent":"Asia","life":64.062,"gdp":1391.253792},{"country":"Belgium","continent":"Europe","life":79.441,"gdp":33692.60508},{"country":"Benin","continent":"Africa","life":56.728,"gdp":1441.284873},{"country":"Bolivia","continent":"Americas","life":65.554,"gdp":3822.137084},{"country":"Bosnia and Herzegovina","continent":"Europe","life":74.852,"gdp":7446.298803},{"country":"Botswana","continent":"Africa","life":50.728,"gdp":12569.85177},{"country":"Brazil","continent":"Americas","life":72.39,"gdp":9065.800825},{"country":"Bulgaria","continent":"Europe","life":73.005,"gdp":10680.79282},{"country":"Burkina Faso","continent":"Africa","life":52.295,"gdp":1217.032994},{"country":"Burundi","continent":"Africa","life":49.58,"gdp":430.0706916},{"country":"Cambodia","continent":"Asia","life":59.723,"gdp":1713.778686},{"country":"Cameroon","continent":"Africa","life":50.43,"gdp":2042.09524},{"country":"Canada","continent":"Americas","life":80.653,"gdp":36319.23501},{"country":"Central African Republic","continent":"Africa","life":44.741,"gdp":706.016537},{"country":"Chad","continent":"Africa","life":50.651,"gdp":1704.063724},{"country":"Chile","continent":"Americas","life":78.553,"gdp":13171.63885},{"country":"China","continent":"Asia","life":72.961,"gdp":4959.114854},{"country":"Colombia","continent":"Americas","life":72.889,"gdp":7006.580419},{"country":"Comoros","continent":"Africa","life":65.152,"gdp":986.1478792},{"country":"Congo, Dem. Rep.","continent":"Africa","life":46.462,"gdp":277.5518587},{"country":"Congo, Rep.","continent":"Africa","life":55.322,"gdp":3632.557798},{"country":"Costa Rica","continent":"Americas","life":78.782,"gdp":9645.06142},{"country":"Cote d'Ivoire","continent":"Africa","life":48.328,"gdp":1544.750112},{"country":"Croatia","continent":"Europe","life":75.748,"gdp":14619.22272},{"country":"Cuba","continent":"Americas","life":78.273,"gdp":8948.102923},{"country":"Czech Republic","continent":"Europe","life":76.486,"gdp":22833.30851},{"country":"Denmark","continent":"Europe","life":78.332,"gdp":35278.41874},{"country":"Djibouti","continent":"Africa","life":54.791,"gdp":2082.481567},{"country":"Dominican Republic","continent":"Americas","life":72.235,"gdp":6025.374752},{"country":"Ecuador","continent":"Americas","life":74.994,"gdp":6873.262326},{"country":"Egypt","continent":"Africa","life":71.338,"gdp":5581.180998},{"country":"El Salvador","continent":"Americas","life":71.878,"gdp":5728.353514},{"country":"Equatorial Guinea","continent":"Africa","life":51.579,"gdp":12154.08975},{"country":"Eritrea","continent":"Africa","life":58.04,"gdp":641.3695236},{"country":"Ethiopia","continent":"Africa","life":52.947,"gdp":690.8055759},{"country":"Finland","continent":"Europe","life":79.313,"gdp":33207.0844},{"country":"France","continent":"Europe","life":80.657,"gdp":30470.0167},{"country":"Gabon","continent":"Africa","life":56.735,"gdp":13206.48452},{"country":"Gambia","continent":"Africa","life":59.448,"gdp":752.7497265},{"country":"Germany","continent":"Europe","life":79.406,"gdp":32170.37442},{"country":"Ghana","continent":"Africa","life":60.022,"gdp":1327.60891},{"country":"Greece","continent":"Europe","life":79.483,"gdp":27538.41188},{"country":"Guatemala","continent":"Americas","life":70.259,"gdp":5186.050003},{"country":"Guinea","continent":"Africa","life":56.007,"gdp":942.6542111},{"country":"Guinea-Bissau","continent":"Africa","life":46.388,"gdp":579.231743},{"country":"Haiti","continent":"Americas","life":60.916,"gdp":1201.637154},{"country":"Honduras","continent":"Americas","life":70.198,"gdp":3548.330846},{"country":"Hong Kong, China","continent":"Asia","life":82.208,"gdp":39724.97867},{"country":"Hungary","continent":"Europe","life":73.338,"gdp":18008.94444},{"country":"Iceland","continent":"Europe","life":81.757,"gdp":36180.78919},{"country":"India","continent":"Asia","life":64.698,"gdp":2452.210407},{"country":"Indonesia","continent":"Asia","life":70.65,"gdp":3540.651564},{"country":"Iran","continent":"Asia","life":70.964,"gdp":11605.71449},{"country":"Iraq","continent":"Asia","life":59.545,"gdp":4471.061906},{"country":"Ireland","continent":"Europe","life":78.885,"gdp":40675.99635},{"country":"Israel","continent":"Asia","life":80.745,"gdp":25523.2771},{"country":"Italy","continent":"Europe","life":80.546,"gdp":28569.7197},{"country":"Jamaica","continent":"Americas","life":72.567,"gdp":7320.880262},{"country":"Japan","continent":"Asia","life":82.603,"gdp":31656.06806},{"country":"Jordan","continent":"Asia","life":72.535,"gdp":4519.461171},{"country":"Kenya","continent":"Africa","life":54.11,"gdp":1463.249282},{"country":"Korea, Dem. Rep.","continent":"Asia","life":67.297,"gdp":1593.06548},{"country":"Korea, Rep.","continent":"Asia","life":78.623,"gdp":23348.13973},{"country":"Kuwait","continent":"Asia","life":77.588,"gdp":47306.98978},{"country":"Lebanon","continent":"Asia","life":71.993,"gdp":10461.05868},{"country":"Lesotho","continent":"Africa","life":42.592,"gdp":1569.331442},{"country":"Liberia","continent":"Africa","life":45.678,"gdp":414.5073415},{"country":"Libya","continent":"Africa","life":73.952,"gdp":12057.49928},{"country":"Madagascar","continent":"Africa","life":59.443,"gdp":1044.770126},{"country":"Malawi","continent":"Africa","life":48.303,"gdp":759.3499101},{"country":"Malaysia","continent":"Asia","life":74.241,"gdp":12451.6558},{"country":"Mali","continent":"Africa","life":54.467,"gdp":1042.581557},{"country":"Mauritania","continent":"Africa","life":64.164,"gdp":1803.151496},{"country":"Mauritius","continent":"Africa","life":72.801,"gdp":10956.99112},{"country":"Mexico","continent":"Americas","life":76.195,"gdp":11977.57496},{"country":"Mongolia","continent":"Asia","life":66.803,"gdp":3095.772271},{"country":"Montenegro","continent":"Europe","life":74.543,"gdp":9253.896111},{"country":"Morocco","continent":"Africa","life":71.164,"gdp":3820.17523},{"country":"Mozambique","continent":"Africa","life":42.082,"gdp":823.6856205},{"country":"Myanmar","continent":"Asia","life":62.069,"gdp":944.0},{"country":"Namibia","continent":"Africa","life":52.906,"gdp":4811.060429},{"country":"Nepal","continent":"Asia","life":63.785,"gdp":1091.359778},{"country":"Netherlands","continent":"Europe","life":79.762,"gdp":36797.93332},{"country":"New Zealand","continent":"Oceania","life":80.204,"gdp":25185.00911},{"country":"Nicaragua","continent":"Americas","life":72.899,"gdp":2749.320965},{"country":"Niger","continent":"Africa","life":56.867,"gdp":619.6768924},{"country":"Nigeria","continent":"Africa","life":46.859,"gdp":2013.977305},{"country":"Norway","continent":"Europe","life":80.196,"gdp":49357.19017},{"country":"Oman","continent":"Asia","life":75.64,"gdp":22316.19287},{"country":"Pakistan","continent":"Asia","life":65.483,"gdp":2605.94758},{"country":"Panama","continent":"Americas","life":75.537,"gdp":9809.185636},{"country":"Paraguay","continent":"Americas","life":71.752,"gdp":4172.838464},{"country":"Peru","continent":"Americas","life":71.421,"gdp":7408.905561},{"country":"Philippines","continent":"Asia","life":71.688,"gdp":3190.481016},{"country":"Poland","continent":"Europe","life":75.563,"gdp":15389.92468},{"country":"Portugal","continent":"Europe","life":78.098,"gdp":20509.64777},{"country":"Puerto Rico","continent":"Americas","life":78.746,"gdp":19328.70901},{"country":"Reunion","continent":"Africa","life":76.442,"gdp":7670.122558},{"country":"Romania","continent":"Europe","life":72.476,"gdp":10808.47561},{"country":"Rwanda","continent":"Africa","life":46.242,"gdp":863.0884639},{"country":"Sao Tome and Principe","continent":"Africa","life":65.528,"gdp":1598.435089},{"country":"Saudi Arabia","continent":"Asia","life":72.777,"gdp":21654.83194},{"country":"Senegal","continent":"Africa","life":63.062,"gdp":1712.472136},{"country":"Serbia","continent":"Europe","life":74.002,"gdp":9786.534714},{"country":"Sierra Leone","continent":"Africa","life":42.568,"gdp":862.5407561},{"country":"Singapore","continent":"Asia","life":79.972,"gdp":47143.17964},{"country":"Slovak Republic","continent":"Europe","life":74.663,"gdp":18678.31435},{"country":"Slovenia","continent":"Europe","life":77.926,"gdp":25768.25759},{"country":"Somalia","continent":"Africa","life":48.159,"gdp":926.1410683},{"country":"South Africa","continent":"Africa","life":49.339,"gdp":9269.657808},{"country":"Spain","continent":"Europe","life":80.941,"gdp":28821.0637},{"country":"Sri Lanka","continent":"Asia","life":72.396,"gdp":3970.095407},{"country":"Sudan","continent":"Africa","life":58.556,"gdp":2602.394995},{"country":"Swaziland","continent":"Africa","life":39.613,"gdp":4513.480643},{"country":"Sweden","continent":"Europe","life":80.884,"gdp":33859.74835},{"country":"Switzerland","continent":"Europe","life":81.701,"gdp":37506.41907},{"country":"Syria","continent":"Asia","life":74.143,"gdp":4184.548089},{"country":"Taiwan","continent":"Asia","life":78.4,"gdp":28718.27684},{"country":"Tanzania","continent":"Africa","life":52.517,"gdp":1107.482182},{"country":"Thailand","continent":"Asia","life":70.616,"gdp":7458.396327},{"country":"Togo","continent":"Africa","life":58.42,"gdp":882.9699438},{"country":"Trinidad and Tobago","continent":"Americas","life":69.819,"gdp":18008.50924},{"country":"Tunisia","continent":"Africa","life":73.923,"gdp":7092.923025},{"country":"Turkey","continent":"Europe","life":71.777,"gdp":8458.276384},{"country":"Uganda","continent":"Africa","life":51.542,"gdp":1056.380121},{"country":"United Kingdom","continent":"Europe","life":79.425,"gdp":33203.26128},{"country":"United States","continent":"Americas","life":78.242,"gdp":42951.65309},{"country":"Uruguay","continent":"Americas","life":76.384,"gdp":10611.46299},{"country":"Venezuela","continent":"Americas","life":73.747,"gdp":11415.80569},{"country":"Vietnam","continent":"Asia","life":74.249,"gdp":2441.576404},{"country":"West Bank and Gaza","continent":"Asia","life":73.422,"gdp":3025.349798},{"country":"Yemen, Rep.","continent":"Asia","life":62.698,"gdp":2280.769906},{"country":"Zambia","continent":"Africa","life":42.384,"gdp":1271.211593},{"country":"Zimbabwe","continent":"Africa","life":43.487,"gdp":469.7092981}],"regions":[{"name":"Andalucia","value":8676713,"x":2,"y":3,"label":"Andalucia"},{"name":"Aragon","value":1364621,"x":4,"y":1,"label":"Aragon"},{"name":"Asturias, Principado de","value":1015128,"x":1,"y":0,"label":"Asturias"},{"name":"Balears, Illes","value":1249844,"x":5,"y":2,"label":"Illes Balears"},{"name":"Canarias","value":2258866,"x":0,"y":4,"label":"Canarias"},{"name":"Cantabria","value":593623,"x":2,"y":0,"label":"Cantabria"},{"name":"Castilla y Leon","value":2401221,"x":1,"y":1,"label":"Castilla y Leon"},{"name":"Castilla - La Mancha","value":2126378,"x":3,"y":2,"label":"Castilla-La Mancha"},{"name":"Cataluna","value":8124126,"x":5,"y":1,"label":"Cataluna"},{"name":"Comunitat Valenciana","value":5425182,"x":4,"y":2,"label":"C. Valenciana"},{"name":"Extremadura","value":1053345,"x":1,"y":3,"label":"Extremadura"},{"name":"Galicia","value":2714741,"x":0,"y":1,"label":"Galicia"},{"name":"Madrid, Comunidad de","value":7113886,"x":2,"y":2,"label":"Madrid"},{"name":"Murcia, Region de","value":1586989,"x":4,"y":3,"label":"Murcia"},{"name":"Navarra, Comunidad Foral de","value":683854,"x":4,"y":0,"label":"Navarra"},{"name":"Pais Vasco","value":2242343,"x":3,"y":0,"label":"Pais Vasco"},{"name":"Rioja, La","value":326803,"x":3,"y":1,"label":"La Rioja"},{"name":"Ceuta","value":83567,"x":3,"y":4,"label":"Ceuta"},{"name":"Melilla","value":87067,"x":4,"y":4,"label":"Melilla"}]};
-const palette={Africa:"#d47c39",Americas:"#187b91",Asia:"#7b67a5",Europe:"#23856d",Oceania:"#c75464"};
-function scatter(){const W=900,H=470,m={l:82,r:22,t:25,b:68},pw=W-m.l-m.r,ph=H-m.t-m.b;const minX=Math.log10(200),maxX=Math.log10(120000),minY=35,maxY=85;const X=v=>m.l+(Math.log10(v)-minX)/(maxX-minX)*pw,Y=v=>m.t+(maxY-v)/(maxY-minY)*ph;let s=[`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Diagrama de dispersion de PIB per capita y esperanza de vida de 142 paises en 2007">`];for(let v=40;v<=80;v+=10){s.push(`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#e1e8eb"/><text x="${m.l-12}" y="${Y(v)+4}" text-anchor="end" fill="#52636f" font-size="12">${v}</text>`)}[300,1000,3000,10000,30000,100000].forEach(v=>{if(v>=200){s.push(`<line x1="${X(v)}" x2="${X(v)}" y1="${m.t}" y2="${H-m.b}" stroke="#edf1f3"/><text x="${X(v)}" y="${H-m.b+24}" text-anchor="middle" fill="#52636f" font-size="12">${v>=1000?(v/1000)+"k":v}</text>`)}});s.push(`<line x1="${m.l}" x2="${W-m.r}" y1="${H-m.b}" y2="${H-m.b}" stroke="#8a9ba5"/><line x1="${m.l}" x2="${m.l}" y1="${m.t}" y2="${H-m.b}" stroke="#8a9ba5"/><text x="${m.l+pw/2}" y="${H-14}" text-anchor="middle" fill="#304653" font-size="14">PIB per capita - dolares internacionales - escala logaritmica</text><text transform="translate(20 ${m.t+ph/2}) rotate(-90)" text-anchor="middle" fill="#304653" font-size="14">Esperanza de vida - anos</text>`);DATA.scatter.forEach(d=>{s.push(`<circle cx="${X(d.gdp).toFixed(2)}" cy="${Y(d.life).toFixed(2)}" r="4.4" fill="${palette[d.continent]}" fill-opacity=".77" stroke="white" stroke-width=".7"><title>${d.country} - ${d.continent}\nPIB per capita: ${Math.round(d.gdp).toLocaleString('es-ES')}\nEsperanza de vida: ${d.life.toFixed(1)} anos</title></circle>`) });s.push(`</svg>`);document.getElementById("scatterChart").innerHTML=s.join("");document.getElementById("scatterLegend").innerHTML=Object.entries(palette).map(([n,c])=>`<span><i class="swatch" style="background:${c}"></i>${n}</span>`).join("")}
-function icon(){const g=document.getElementById("iconGrid");for(let i=0;i<100;i++){const d=document.createElement("div");d.className="unit"+(i<57?" on":"");d.innerHTML='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M27 4C16 4 8 7 5 14c-2 5 1 10 6 11 7 2 14-5 16-21Z" fill="currentColor"/><path d="M7 26c5-7 10-11 17-17" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>';g.appendChild(d)}}
-function tile(){const m=document.getElementById("tileMap");DATA.regions.forEach(r=>{const d=document.createElement("div"),t=r.value<500000?0:r.value<1000000?1:r.value<2000000?2:r.value<4000000?3:4;d.className="tile t"+t;d.style.gridColumn=(r.x+1);d.style.gridRow=(r.y+1);d.innerHTML=`<span>${r.label}</span><b>${(r.value/1e6).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} M</b>`;d.title=`${r.name}: ${r.value.toLocaleString('es-ES')} habitantes (2025)`;m.appendChild(d)})}
-scatter();icon();tile();
-</script></body></html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Tres técnicas de visualización de datos: scatterplot, Icon Chart y Tile Grid Map. PEC 2 UOC.">
+    <title>PEC 2 - Tres técnicas de visualización</title>
+    <style>
+      :root {
+        --ink:#182a3a;
+        --muted:#5c6c78;
+        --line:#d8e0e5;
+        --paper:#f4f7f8;
+        --card:#fff;
+        --blue:#187b91;
+        --green:#23856d;
+        --orange:#d47c39;
+        --navy:#183d59;
+        --shadow:0 14px 36px #183d5912
+      }
+      * {
+        box-sizing:border-box
+      }
+      html {
+        scroll-behavior:smooth
+      }
+      body {
+        margin:0;
+        background:var(--paper);
+        color:var(--ink);
+        font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif
+      }
+      a {
+        color:#126d84;
+        text-underline-offset:3px
+      }
+      header {
+        background:var(--navy);
+        color:white;
+        padding:48px max(24px,calc((100vw - 1120px)/2)) 38px
+      }
+      .eyebrow {
+        letter-spacing:.14em;
+        text-transform:uppercase;
+        font-weight:700;
+        font-size:.76rem;
+        color:#9dd5dc
+      }
+      h1 {
+        font-size:clamp(2.2rem,5vw,4.4rem);
+        line-height:1.02;
+        max-width:850px;
+        margin:.5rem 0 1rem
+      }
+      header p {
+        max-width:700px;
+        color:#dce9ee;
+        font-size:1.1rem;
+        margin:.4rem 0
+      }
+      .meta {
+        display:flex;
+        gap:20px;
+        flex-wrap:wrap;
+        margin-top:22px;
+        font-size:.9rem;
+        color:#cfdee5
+      }
+      .nav {
+        background:#fff;
+        border-bottom:1px solid var(--line);
+        position:sticky;
+        top:0;
+        z-index:3
+      }
+      .nav div {
+        max-width:1120px;
+        margin:auto;
+        padding:12px 20px;
+        display:flex;
+        gap:22px;
+        flex-wrap:wrap
+      }
+      .nav a {
+        text-decoration:none;
+        font-size:.9rem;
+        font-weight:700
+      }
+      main {
+        max-width:1120px;
+        padding:28px 20px 80px;
+        margin:auto
+      }
+      .intro {
+        max-width:820px;
+        margin:0 auto 30px;
+        text-align:center;
+        color:var(--muted)
+      }
+      .panel {
+        background:var(--card);
+        border:1px solid var(--line);
+        border-radius:20px;
+        padding:clamp(22px,4vw,42px);
+        margin:22px 0;
+        box-shadow:var(--shadow)
+      }
+      .section-kicker {
+        font-size:.76rem;
+        letter-spacing:.13em;
+        text-transform:uppercase;
+        color:var(--blue);
+        font-weight:800
+      }
+      .panel h2 {
+        font-size:clamp(1.8rem,3vw,2.7rem);
+        line-height:1.1;
+        margin:.3rem 0 .6rem
+      }
+      .lede {
+        font-size:1.08rem;
+        color:var(--muted);
+        max-width:780px
+      }
+      .chart-wrap {
+        margin:24px 0;
+        background:#f8fafb;
+        border-radius:16px;
+        border:1px solid #e6ecef;
+        padding:12px
+      }
+      .chart-wrap svg {
+        width:100%;
+        height:auto;
+        display:block
+      }
+      .chart-caption {
+        font-size:.88rem;
+        color:var(--muted);
+        margin:10px 4px 2px
+      }
+      .legend {
+        display:flex;
+        gap:12px;
+        flex-wrap:wrap;
+        margin:8px 3px
+      }
+      .legend span {
+        font-size:.86rem;
+        color:#445664;
+        display:inline-flex;
+        align-items:center;
+        gap:6px
+      }
+      .swatch {
+        width:11px;
+        height:11px;
+        border-radius:50%;
+        display:inline-block
+      }
+      .facts {
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:14px;
+        margin-top:22px
+      }
+      .fact {
+        padding:16px;
+        background:#f6f9fa;
+        border-radius:12px;
+        border-left:3px solid var(--blue)
+      }
+      .fact b {
+        display:block;
+        margin-bottom:5px
+      }
+      .fact p {
+        margin:0;
+        color:#52636f
+      }
+      .small {
+        font-size:.9rem;
+        color:var(--muted)
+      }
+      .bigstat {
+        font-size:clamp(2.6rem,6vw,4rem);
+        font-weight:800;
+        letter-spacing:-.04em;
+        color:var(--green);
+        line-height:1
+      }
+      .icon-grid {
+        display:grid;
+        grid-template-columns:repeat(10,minmax(19px,1fr));
+        gap:8px;
+        max-width:740px;
+        margin:24px auto 12px
+      }
+      .unit {
+        aspect-ratio:1;
+        color:#ced8dc;
+        display:grid;
+        place-items:center
+      }
+      .unit.on {
+        color:#23856d
+      }
+      .unit svg {
+        width:100%;
+        height:100%;
+        max-width:42px;
+        max-height:42px;
+        overflow:visible
+      }
+      .gridmap {
+        display:grid;
+        grid-template-columns:repeat(6,minmax(0,1fr));
+        grid-template-rows:repeat(5,96px);
+        gap:8px;
+        max-width:850px;
+        margin:22px auto
+      }
+      .tile {
+        border-radius:11px;
+        padding:8px;
+        color:white;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+        box-shadow:inset 0 0 0 1px #ffffff52;
+        min-width:0
+      }
+      .tile span {
+        font-size:.76rem;
+        line-height:1.15;
+        font-weight:700
+      }
+      .tile b {
+        font-size:1rem
+      }
+      .tile.t0 {
+        background:#d5e8e4;
+        color:#193e48
+      }
+      .tile.t1 {
+        background:#a7d4c9;
+        color:#193e48
+      }
+      .tile.t2 {
+        background:#65b3a0;
+        color:#113f43
+      }
+      .tile.t3 {
+        background:#328a81
+      }
+      .tile.t4 {
+        background:#174e63
+      }
+      .tilekey {
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+        font-size:.8rem;
+        color:#52636f
+      }
+      .tilekey span {
+        display:inline-flex;
+        align-items:center;
+        gap:5px
+      }
+      .tilekey i {
+        width:14px;
+        height:14px;
+        border-radius:4px
+      }
+      .callout {
+        border-left:4px solid var(--orange);
+        padding:12px 16px;
+        background:#fff7f0;
+        border-radius:0 10px 10px 0;
+        color:#5c4a3d;
+        margin:16px 0
+      }
+      .source {
+        font-size:.86rem;
+        color:#60717d;
+        margin-top:14px
+      }
+      .footer {
+        padding:26px;
+        text-align:center;
+        color:#667782;
+        font-size:.86rem
+      }
+      @media(max-width:680px) {
+        header {
+          padding-top:34px
+        }
+        .facts {
+          grid-template-columns:1fr
+        }
+        .gridmap {
+          grid-template-rows:repeat(5,68px);
+          gap:5px
+        }
+        .tile {
+          padding:5px;
+          border-radius:7px
+        }
+        .tile span {
+          font-size:.61rem
+        }
+        .tile b {
+          font-size:.8rem
+        }
+        .icon-grid {
+          gap:5px
+        }
+        .nav div {
+          gap:12px
+        }
+        .chart-wrap {
+          padding:5px
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="eyebrow">Visualización de datos - Máster Universitario en Ciencia de Datos - UOC</div>
+      <h1>Tres técnicas, tres formas de mirar los datos</h1>
+      <p>PEC 2 - Scatterplot, Icon Chart y Tile Grid Map</p>
+      <div class="meta">
+        <span>
+          Presenta:
+          <b>Alberto Simón Fernández de la Mela</b>
+        </span>
+        <span>Fecha de publicación: 30 de octubre de 2026</span>
+        <span>Créditos: diseño y desarrollo propios. Fuentes enlazadas en cada visualización</span>
+      </div>
+    </header>
+    <nav class="nav">
+      <div>
+        <a href="#scatter">01 Scatterplot</a>
+        <a href="#icon">02 Icon Chart</a>
+        <a href="#tile">03 Tile Grid Map</a>
+      </div>
+    </nav>
+    <main>
+      <p class="intro">Tres visualizaciones pequeñas con datos abiertos. Cada diseño parte de la estructura de los datos y de una pregunta concreta. El gráfico facilita la comparación, pero no sustituye la interpretación.</p>
+      <section id="scatter" class="panel">
+        <div class="section-kicker">Técnica 1 - relación entre variables</div>
+        <h2>Scatterplot</h2>
+        <p class="lede">¿Se asocia una renta nacional más alta con una esperanza de vida mayor? Cada punto representa un país en 2007.</p>
+        <div class="chart-wrap">
+          <div id="scatterChart"></div>
+          <div id="scatterLegend" class="legend"></div>
+          <p class="chart-caption">PIB per cápita (dólares internacionales, escala logarítmica) frente a esperanza de vida. Pasa el cursor por cada punto para consultar el país y los valores.</p>
+        </div>
+        <div class="facts">
+          <div class="fact">
+            <b>Qué es y cómo funciona</b>
+            <p>Ubica observaciones como puntos mediante dos variables cuantitativas (X e Y). La nube permite reconocer asociación, dirección, forma, agrupaciones y valores atípicos. Puede añadirse color para una categoría. Una correlación no prueba causalidad.</p>
+          </div>
+          <div class="fact">
+            <b>Origen y evolución</b>
+            <p>John F. W. Herschel ya representó pares de medidas astronómicas en 1833. Francis Galton amplió y popularizó el uso de diagramas de puntos para estudiar relaciones y correlación en el siglo XIX.</p>
+          </div>
+          <div class="fact">
+            <b>Datos adecuados y límites</b>
+            <p>Una fila por entidad y dos medidas numéricas comparables. Unas pocas observaciones sirven para mostrar puntos individuales. Para detectar patrón conviene una muestra mayor. Con muchos puntos aparece solapamiento (usar transparencia, muestreo, agregación o densidad). La escala logarítmica ayuda a mostrar países con PIB muy desigual.</p>
+          </div>
+          <div class="fact">
+            <b>Aplicaciones habituales</b>
+            <p>Exploración de correlaciones, control de calidad, comparación de grupos, detección de atípicos y diagnóstico de modelos. Audiencia: estudiantes y público interesado en desigualdad y desarrollo.</p>
+          </div>
+        </div>
+        <div class="callout">
+          <b>Lectura:</b>
+          los países de mayor PIB per cápita tienden a situarse también en valores más altos de esperanza de vida, aunque la dispersión muestra que la asociación no es perfecta. El gráfico no establece que el PIB cause mayor longevidad.
+        </div>
+        <p class="source">
+          Datos:
+          <a href="https://github.com/plotly/datasets/blob/master/gapminderDataFiveYear.csv">Gapminder, conjunto distribuido por Plotly</a>
+          (selección del año 2007). Fuente metodológica:
+          <a href="https://www.data-to-viz.com/graph/scatter.html">From Data to Viz</a>
+          y
+          <a href="https://www.sci.utah.edu/~kpotter/Library/Papers/friendly%3A2005%3AEODS/index.html">Friendly & Denis, historia del scatterplot</a>.
+        </p>
+      </section>
+      <section id="icon" class="panel">
+        <div class="section-kicker">Técnica 2 - parte de un total</div>
+        <h2>Icon Chart</h2>
+        <p class="lede">En 2024, más de la mitad de la electricidad generada en España procedió de fuentes renovables.</p>
+        <div style="display:flex;gap:24px;align-items:end;flex-wrap:wrap;margin-top:18px">
+          <div class="bigstat">56,8%</div>
+          <div style="padding-bottom:7px">
+            <b>de la generación eléctrica fue renovable</b>
+            <br>
+            <span class="small">España - 2024 - Red Eléctrica</span>
+          </div>
+        </div>
+        <div id="iconGrid" class="icon-grid" role="img" aria-label="Matriz de cien unidades: 57 verdes y 43 grises representan, redondeado, 56,8 por ciento renovable y 43,2 por ciento no renovable"></div>
+        <div class="legend">
+          <span>
+            <i class="swatch" style="background:#23856d;border-radius:3px"></i>
+            Renovable - 56,8% (57 iconos redondeados)
+          </span>
+          <span>
+            <i class="swatch" style="background:#ced8dc;border-radius:3px"></i>
+            No renovable - 43,2% (43 iconos redondeados)
+          </span>
+        </div>
+        <p class="chart-caption">Cada icono representa un punto porcentual de 100. Como se muestran unidades enteras, la matriz redondea 56,8 a 57. La cifra exacta aparece arriba.</p>
+        <div class="facts">
+          <div class="fact">
+            <b>Qué es y cómo funciona</b>
+            <p>También llamado pictograma, pictográfico o unit chart. Repite símbolos de igual tamaño. Cada símbolo representa una unidad o una cantidad fija. El color distingue partes del total. Aquí 100 iconos forman una matriz 100% y verde representa el porcentaje renovable.</p>
+          </div>
+          <div class="fact">
+            <b>Origen y autoría</b>
+            <p>No existe un autor único del formato actual. Su antecedente moderno más influyente es el sistema ISOTYPE, creado en Viena en los años veinte por Otto Neurath y desarrollado con Marie Neurath y el artista Gerd Arntz para explicar estadísticas mediante símbolos repetidos.</p>
+          </div>
+          <div class="fact">
+            <b>Datos adecuados y límites</b>
+            <p>Frecuencias, porcentajes y pocas categorías con un denominador explícito. Conviene mantener los iconos ordenados y simples. Es más eficaz para proporciones redondeables que para muchas categorías o valores de gran magnitud. Contar y comparar con precisión es más lento que con una barra.</p>
+          </div>
+          <div class="fact">
+            <b>Aplicaciones habituales</b>
+            <p>Comunicación pública de proporciones, riesgos, encuestas, salud y consumo. La audiencia es el público general. El símbolo familiar hace memorable el reparto. La limitación aquí es el redondeo visual, compensado con el dato exacto.</p>
+          </div>
+        </div>
+        <div class="callout">
+          <b>Objetivo:</b>
+          que la audiencia perciba rápidamente que la generación renovable ya supera la mitad, sin ocultar el 43,2% restante. El Icon Chart hace visible el todo y la parte. La etiqueta numérica conserva la precisión.
+        </div>
+        <p class="source">
+          Dato:
+          <a href="https://www.sistemaelectrico-ree.es/es/2024/informe-del-sistema-electrico/generacion/generacion-de-energia-electrica/generacion-renovable-de-energia-electrica">Red Eléctrica, Informe del Sistema Eléctrico 2024</a>. Antecedente ISOTYPE:
+          <a href="https://isotyperevisited.org/2012/08/introduction.php">Isotype Revisited</a>. Principios y límites de los unit charts:
+          <a href="https://eprints.whiterose.ac.uk/id/eprint/141931/10/Lonsdale%26Lonsdale_2019_Design2Inform_InformationVisualisation.pdf">Lonsdale & Lonsdale, Design2Inform</a>.
+        </p>
+      </section>
+      <section id="tile" class="panel">
+        <div class="section-kicker">Técnica 3 - geografía en celdas comparables</div>
+        <h2>Tile Grid Map</h2>
+        <p class="lede">La población de las comunidades y ciudades autónomas de España, con un tile del mismo tamaño para cada territorio.</p>
+        <div class="gridmap" id="tileMap" role="img" aria-label="Mapa esquemático en cuadrícula de España con la población por comunidad autónoma en 2025"></div>
+        <div class="tilekey">
+          <span>
+            <i style="background:#d5e8e4"></i>
+            &lt;
+            0,5 M
+          </span>
+          <span>
+            <i style="background:#a7d4c9"></i>
+            0,5–1 M
+          </span>
+          <span>
+            <i style="background:#65b3a0"></i>
+            1.2 M
+          </span>
+          <span>
+            <i style="background:#328a81"></i>
+            2.4 M
+          </span>
+          <span>
+            <i style="background:#174e63"></i>
+            &gt;
+            4 M habitantes
+          </span>
+        </div>
+        <p class="chart-caption">Diseño esquemático con orientación aproximada norte-sur y este-oeste. Cada celda representa una comunidad o ciudad autónoma. El color codifica la población y el rótulo la muestra en millones.</p>
+        <div class="facts">
+          <div class="fact">
+            <b>Qué es y cómo funciona</b>
+            <p>Reemplaza cada región geográfica por una celda geométrica uniforme, normalmente cuadrada o hexagonal. La celda conserva la identidad y una ubicación aproximada. El color u otras marcas codifican el dato. No representa el área real del territorio.</p>
+          </div>
+          <div class="fact">
+            <b>Origen y evolución</b>
+            <p>Es una familia de mapas temáticos y cartogramas, sin una persona inventora única. Su uso editorial se extendió para dar visibilidad a regiones pequeñas. McNeill y Hale (2017) formalizaron algoritmos para generar y comparar tile maps a partir de geometrías.</p>
+          </div>
+          <div class="fact">
+            <b>Datos adecuados y límites</b>
+            <p>Dato cuantitativo agregado por región más un identificador geográfico y una asignación de celda. Funciona mejor con una cantidad moderada de unidades con nombre conocido. Aquí son 19. No hay un máximo fijo, pero muchas celdas o rótulos pequeños reducen legibilidad. La cuadrícula deforma distancias, formas y relaciones de vecindad. La posición debe explicarse.</p>
+          </div>
+          <div class="fact">
+            <b>Aplicaciones habituales</b>
+            <p>Comparar indicadores por territorios, elecciones, población, salud o resultados deportivos cuando un mapa real deja regiones pequeñas invisibles. Audiencia: personas que conocen la geografía española pero necesitan comparar magnitudes regionales.</p>
+          </div>
+        </div>
+        <div class="callout">
+          <b>Lectura:</b>
+          Madrid, Cataluña, Andalucía y la Comunitat Valenciana concentran los tiles de población más alta. Ceuta, Melilla y La Rioja se ven con la misma superficie que Andalucía, aunque su población es muy distinta. La cuadrícula refuerza la comparación por región, y pierde precisión de forma y distancia.
+        </div>
+        <p class="source">
+          Datos:
+          <a href="https://datos.gob.es/en/catalogo/ea0042823-poblacion-segun-comunidad-autonoma-y-provincia-y-sexo-identificador-api-67988">INE, Población por comunidad autónoma, provincia y sexo (tabla 67988)</a>, año 2025. Investigación:
+          <a href="https://diglib.eg.org/items/696be9eb-39cf-4b0c-9f64-28f1cf51ee5b">McNeill & Hale, “Generating Tile Maps” (2017)</a>
+          y
+          <a href="https://blog.apps.npr.org/2015/05/11/hex-tile-maps.html">NPR Visuals, diseño de hex tile maps</a>.
+        </p>
+      </section>
+      <section class="panel">
+        <div class="section-kicker">Créditos y nota de método</div>
+        <h2>Acerca de esta página</h2>
+        <p>Visualizaciones originales realizadas para la PEC 2 de Visualización de Datos, Máster Universitario en Ciencia de Datos de la UOC. La página presenta usos introductorios. Las definiciones y limitaciones se resumen a partir de las fuentes enlazadas. Datos descargados y seleccionados en formato abierto: Gapminder/Plotly, Red Eléctrica e INE.</p>
+        <p class="small">Presenta: Alberto Simón Fernández de la Mela - Publicación: 30/10/2026. El texto distingue el valor original de la codificación aproximada en el Icon Chart y advierte que la cuadrícula regional no es un mapa geográfico de precisión métrica.</p>
+      </section>
+    </main>
+    <div class="footer">PEC 2 - Visualización de datos - UOC - 2026</div>
+    <script>
+      const DATA = {
+        "scatter": [
+          {
+            "country": "Afghanistan",
+            "continent": "Asia",
+            "life": 43.828,
+            "gdp": 974.5803384
+          },
+          {
+            "country": "Albania",
+            "continent": "Europe",
+            "life": 76.423,
+            "gdp": 5937.029526
+          },
+          {
+            "country": "Algeria",
+            "continent": "Africa",
+            "life": 72.301,
+            "gdp": 6223.367465
+          },
+          {
+            "country": "Angola",
+            "continent": "Africa",
+            "life": 42.731,
+            "gdp": 4797.231267
+          },
+          {
+            "country": "Argentina",
+            "continent": "Americas",
+            "life": 75.32,
+            "gdp": 12779.37964
+          },
+          {
+            "country": "Australia",
+            "continent": "Oceania",
+            "life": 81.235,
+            "gdp": 34435.36744
+          },
+          {
+            "country": "Austria",
+            "continent": "Europe",
+            "life": 79.829,
+            "gdp": 36126.4927
+          },
+          {
+            "country": "Bahrain",
+            "continent": "Asia",
+            "life": 75.635,
+            "gdp": 29796.04834
+          },
+          {
+            "country": "Bangladesh",
+            "continent": "Asia",
+            "life": 64.062,
+            "gdp": 1391.253792
+          },
+          {
+            "country": "Belgium",
+            "continent": "Europe",
+            "life": 79.441,
+            "gdp": 33692.60508
+          },
+          {
+            "country": "Benin",
+            "continent": "Africa",
+            "life": 56.728,
+            "gdp": 1441.284873
+          },
+          {
+            "country": "Bolivia",
+            "continent": "Americas",
+            "life": 65.554,
+            "gdp": 3822.137084
+          },
+          {
+            "country": "Bosnia and Herzegovina",
+            "continent": "Europe",
+            "life": 74.852,
+            "gdp": 7446.298803
+          },
+          {
+            "country": "Botswana",
+            "continent": "Africa",
+            "life": 50.728,
+            "gdp": 12569.85177
+          },
+          {
+            "country": "Brazil",
+            "continent": "Americas",
+            "life": 72.39,
+            "gdp": 9065.800825
+          },
+          {
+            "country": "Bulgaria",
+            "continent": "Europe",
+            "life": 73.005,
+            "gdp": 10680.79282
+          },
+          {
+            "country": "Burkina Faso",
+            "continent": "Africa",
+            "life": 52.295,
+            "gdp": 1217.032994
+          },
+          {
+            "country": "Burundi",
+            "continent": "Africa",
+            "life": 49.58,
+            "gdp": 430.0706916
+          },
+          {
+            "country": "Cambodia",
+            "continent": "Asia",
+            "life": 59.723,
+            "gdp": 1713.778686
+          },
+          {
+            "country": "Cameroon",
+            "continent": "Africa",
+            "life": 50.43,
+            "gdp": 2042.09524
+          },
+          {
+            "country": "Canada",
+            "continent": "Americas",
+            "life": 80.653,
+            "gdp": 36319.23501
+          },
+          {
+            "country": "Central African Republic",
+            "continent": "Africa",
+            "life": 44.741,
+            "gdp": 706.016537
+          },
+          {
+            "country": "Chad",
+            "continent": "Africa",
+            "life": 50.651,
+            "gdp": 1704.063724
+          },
+          {
+            "country": "Chile",
+            "continent": "Americas",
+            "life": 78.553,
+            "gdp": 13171.63885
+          },
+          {
+            "country": "China",
+            "continent": "Asia",
+            "life": 72.961,
+            "gdp": 4959.114854
+          },
+          {
+            "country": "Colombia",
+            "continent": "Americas",
+            "life": 72.889,
+            "gdp": 7006.580419
+          },
+          {
+            "country": "Comoros",
+            "continent": "Africa",
+            "life": 65.152,
+            "gdp": 986.1478792
+          },
+          {
+            "country": "Congo, Dem. Rep.",
+            "continent": "Africa",
+            "life": 46.462,
+            "gdp": 277.5518587
+          },
+          {
+            "country": "Congo, Rep.",
+            "continent": "Africa",
+            "life": 55.322,
+            "gdp": 3632.557798
+          },
+          {
+            "country": "Costa Rica",
+            "continent": "Americas",
+            "life": 78.782,
+            "gdp": 9645.06142
+          },
+          {
+            "country": "Cote d'Ivoire",
+            "continent": "Africa",
+            "life": 48.328,
+            "gdp": 1544.750112
+          },
+          {
+            "country": "Croatia",
+            "continent": "Europe",
+            "life": 75.748,
+            "gdp": 14619.22272
+          },
+          {
+            "country": "Cuba",
+            "continent": "Americas",
+            "life": 78.273,
+            "gdp": 8948.102923
+          },
+          {
+            "country": "Czech Republic",
+            "continent": "Europe",
+            "life": 76.486,
+            "gdp": 22833.30851
+          },
+          {
+            "country": "Denmark",
+            "continent": "Europe",
+            "life": 78.332,
+            "gdp": 35278.41874
+          },
+          {
+            "country": "Djibouti",
+            "continent": "Africa",
+            "life": 54.791,
+            "gdp": 2082.481567
+          },
+          {
+            "country": "Dominican Republic",
+            "continent": "Americas",
+            "life": 72.235,
+            "gdp": 6025.374752
+          },
+          {
+            "country": "Ecuador",
+            "continent": "Americas",
+            "life": 74.994,
+            "gdp": 6873.262326
+          },
+          {
+            "country": "Egypt",
+            "continent": "Africa",
+            "life": 71.338,
+            "gdp": 5581.180998
+          },
+          {
+            "country": "El Salvador",
+            "continent": "Americas",
+            "life": 71.878,
+            "gdp": 5728.353514
+          },
+          {
+            "country": "Equatorial Guinea",
+            "continent": "Africa",
+            "life": 51.579,
+            "gdp": 12154.08975
+          },
+          {
+            "country": "Eritrea",
+            "continent": "Africa",
+            "life": 58.04,
+            "gdp": 641.3695236
+          },
+          {
+            "country": "Ethiopia",
+            "continent": "Africa",
+            "life": 52.947,
+            "gdp": 690.8055759
+          },
+          {
+            "country": "Finland",
+            "continent": "Europe",
+            "life": 79.313,
+            "gdp": 33207.0844
+          },
+          {
+            "country": "France",
+            "continent": "Europe",
+            "life": 80.657,
+            "gdp": 30470.0167
+          },
+          {
+            "country": "Gabon",
+            "continent": "Africa",
+            "life": 56.735,
+            "gdp": 13206.48452
+          },
+          {
+            "country": "Gambia",
+            "continent": "Africa",
+            "life": 59.448,
+            "gdp": 752.7497265
+          },
+          {
+            "country": "Germany",
+            "continent": "Europe",
+            "life": 79.406,
+            "gdp": 32170.37442
+          },
+          {
+            "country": "Ghana",
+            "continent": "Africa",
+            "life": 60.022,
+            "gdp": 1327.60891
+          },
+          {
+            "country": "Greece",
+            "continent": "Europe",
+            "life": 79.483,
+            "gdp": 27538.41188
+          },
+          {
+            "country": "Guatemala",
+            "continent": "Americas",
+            "life": 70.259,
+            "gdp": 5186.050003
+          },
+          {
+            "country": "Guinea",
+            "continent": "Africa",
+            "life": 56.007,
+            "gdp": 942.6542111
+          },
+          {
+            "country": "Guinea-Bissau",
+            "continent": "Africa",
+            "life": 46.388,
+            "gdp": 579.231743
+          },
+          {
+            "country": "Haiti",
+            "continent": "Americas",
+            "life": 60.916,
+            "gdp": 1201.637154
+          },
+          {
+            "country": "Honduras",
+            "continent": "Americas",
+            "life": 70.198,
+            "gdp": 3548.330846
+          },
+          {
+            "country": "Hong Kong, China",
+            "continent": "Asia",
+            "life": 82.208,
+            "gdp": 39724.97867
+          },
+          {
+            "country": "Hungary",
+            "continent": "Europe",
+            "life": 73.338,
+            "gdp": 18008.94444
+          },
+          {
+            "country": "Iceland",
+            "continent": "Europe",
+            "life": 81.757,
+            "gdp": 36180.78919
+          },
+          {
+            "country": "India",
+            "continent": "Asia",
+            "life": 64.698,
+            "gdp": 2452.210407
+          },
+          {
+            "country": "Indonesia",
+            "continent": "Asia",
+            "life": 70.65,
+            "gdp": 3540.651564
+          },
+          {
+            "country": "Iran",
+            "continent": "Asia",
+            "life": 70.964,
+            "gdp": 11605.71449
+          },
+          {
+            "country": "Iraq",
+            "continent": "Asia",
+            "life": 59.545,
+            "gdp": 4471.061906
+          },
+          {
+            "country": "Ireland",
+            "continent": "Europe",
+            "life": 78.885,
+            "gdp": 40675.99635
+          },
+          {
+            "country": "Israel",
+            "continent": "Asia",
+            "life": 80.745,
+            "gdp": 25523.2771
+          },
+          {
+            "country": "Italy",
+            "continent": "Europe",
+            "life": 80.546,
+            "gdp": 28569.7197
+          },
+          {
+            "country": "Jamaica",
+            "continent": "Americas",
+            "life": 72.567,
+            "gdp": 7320.880262
+          },
+          {
+            "country": "Japan",
+            "continent": "Asia",
+            "life": 82.603,
+            "gdp": 31656.06806
+          },
+          {
+            "country": "Jordan",
+            "continent": "Asia",
+            "life": 72.535,
+            "gdp": 4519.461171
+          },
+          {
+            "country": "Kenya",
+            "continent": "Africa",
+            "life": 54.11,
+            "gdp": 1463.249282
+          },
+          {
+            "country": "Korea, Dem. Rep.",
+            "continent": "Asia",
+            "life": 67.297,
+            "gdp": 1593.06548
+          },
+          {
+            "country": "Korea, Rep.",
+            "continent": "Asia",
+            "life": 78.623,
+            "gdp": 23348.13973
+          },
+          {
+            "country": "Kuwait",
+            "continent": "Asia",
+            "life": 77.588,
+            "gdp": 47306.98978
+          },
+          {
+            "country": "Lebanon",
+            "continent": "Asia",
+            "life": 71.993,
+            "gdp": 10461.05868
+          },
+          {
+            "country": "Lesotho",
+            "continent": "Africa",
+            "life": 42.592,
+            "gdp": 1569.331442
+          },
+          {
+            "country": "Liberia",
+            "continent": "Africa",
+            "life": 45.678,
+            "gdp": 414.5073415
+          },
+          {
+            "country": "Libya",
+            "continent": "Africa",
+            "life": 73.952,
+            "gdp": 12057.49928
+          },
+          {
+            "country": "Madagascar",
+            "continent": "Africa",
+            "life": 59.443,
+            "gdp": 1044.770126
+          },
+          {
+            "country": "Malawi",
+            "continent": "Africa",
+            "life": 48.303,
+            "gdp": 759.3499101
+          },
+          {
+            "country": "Malaysia",
+            "continent": "Asia",
+            "life": 74.241,
+            "gdp": 12451.6558
+          },
+          {
+            "country": "Mali",
+            "continent": "Africa",
+            "life": 54.467,
+            "gdp": 1042.581557
+          },
+          {
+            "country": "Mauritania",
+            "continent": "Africa",
+            "life": 64.164,
+            "gdp": 1803.151496
+          },
+          {
+            "country": "Mauritius",
+            "continent": "Africa",
+            "life": 72.801,
+            "gdp": 10956.99112
+          },
+          {
+            "country": "Mexico",
+            "continent": "Americas",
+            "life": 76.195,
+            "gdp": 11977.57496
+          },
+          {
+            "country": "Mongolia",
+            "continent": "Asia",
+            "life": 66.803,
+            "gdp": 3095.772271
+          },
+          {
+            "country": "Montenegro",
+            "continent": "Europe",
+            "life": 74.543,
+            "gdp": 9253.896111
+          },
+          {
+            "country": "Morocco",
+            "continent": "Africa",
+            "life": 71.164,
+            "gdp": 3820.17523
+          },
+          {
+            "country": "Mozambique",
+            "continent": "Africa",
+            "life": 42.082,
+            "gdp": 823.6856205
+          },
+          {
+            "country": "Myanmar",
+            "continent": "Asia",
+            "life": 62.069,
+            "gdp": 944.0
+          },
+          {
+            "country": "Namibia",
+            "continent": "Africa",
+            "life": 52.906,
+            "gdp": 4811.060429
+          },
+          {
+            "country": "Nepal",
+            "continent": "Asia",
+            "life": 63.785,
+            "gdp": 1091.359778
+          },
+          {
+            "country": "Netherlands",
+            "continent": "Europe",
+            "life": 79.762,
+            "gdp": 36797.93332
+          },
+          {
+            "country": "New Zealand",
+            "continent": "Oceania",
+            "life": 80.204,
+            "gdp": 25185.00911
+          },
+          {
+            "country": "Nicaragua",
+            "continent": "Americas",
+            "life": 72.899,
+            "gdp": 2749.320965
+          },
+          {
+            "country": "Niger",
+            "continent": "Africa",
+            "life": 56.867,
+            "gdp": 619.6768924
+          },
+          {
+            "country": "Nigeria",
+            "continent": "Africa",
+            "life": 46.859,
+            "gdp": 2013.977305
+          },
+          {
+            "country": "Norway",
+            "continent": "Europe",
+            "life": 80.196,
+            "gdp": 49357.19017
+          },
+          {
+            "country": "Oman",
+            "continent": "Asia",
+            "life": 75.64,
+            "gdp": 22316.19287
+          },
+          {
+            "country": "Pakistan",
+            "continent": "Asia",
+            "life": 65.483,
+            "gdp": 2605.94758
+          },
+          {
+            "country": "Panama",
+            "continent": "Americas",
+            "life": 75.537,
+            "gdp": 9809.185636
+          },
+          {
+            "country": "Paraguay",
+            "continent": "Americas",
+            "life": 71.752,
+            "gdp": 4172.838464
+          },
+          {
+            "country": "Peru",
+            "continent": "Americas",
+            "life": 71.421,
+            "gdp": 7408.905561
+          },
+          {
+            "country": "Philippines",
+            "continent": "Asia",
+            "life": 71.688,
+            "gdp": 3190.481016
+          },
+          {
+            "country": "Poland",
+            "continent": "Europe",
+            "life": 75.563,
+            "gdp": 15389.92468
+          },
+          {
+            "country": "Portugal",
+            "continent": "Europe",
+            "life": 78.098,
+            "gdp": 20509.64777
+          },
+          {
+            "country": "Puerto Rico",
+            "continent": "Americas",
+            "life": 78.746,
+            "gdp": 19328.70901
+          },
+          {
+            "country": "Reunion",
+            "continent": "Africa",
+            "life": 76.442,
+            "gdp": 7670.122558
+          },
+          {
+            "country": "Romania",
+            "continent": "Europe",
+            "life": 72.476,
+            "gdp": 10808.47561
+          },
+          {
+            "country": "Rwanda",
+            "continent": "Africa",
+            "life": 46.242,
+            "gdp": 863.0884639
+          },
+          {
+            "country": "Sao Tome and Principe",
+            "continent": "Africa",
+            "life": 65.528,
+            "gdp": 1598.435089
+          },
+          {
+            "country": "Saudi Arabia",
+            "continent": "Asia",
+            "life": 72.777,
+            "gdp": 21654.83194
+          },
+          {
+            "country": "Senegal",
+            "continent": "Africa",
+            "life": 63.062,
+            "gdp": 1712.472136
+          },
+          {
+            "country": "Serbia",
+            "continent": "Europe",
+            "life": 74.002,
+            "gdp": 9786.534714
+          },
+          {
+            "country": "Sierra Leone",
+            "continent": "Africa",
+            "life": 42.568,
+            "gdp": 862.5407561
+          },
+          {
+            "country": "Singapore",
+            "continent": "Asia",
+            "life": 79.972,
+            "gdp": 47143.17964
+          },
+          {
+            "country": "Slovak Republic",
+            "continent": "Europe",
+            "life": 74.663,
+            "gdp": 18678.31435
+          },
+          {
+            "country": "Slovenia",
+            "continent": "Europe",
+            "life": 77.926,
+            "gdp": 25768.25759
+          },
+          {
+            "country": "Somalia",
+            "continent": "Africa",
+            "life": 48.159,
+            "gdp": 926.1410683
+          },
+          {
+            "country": "South Africa",
+            "continent": "Africa",
+            "life": 49.339,
+            "gdp": 9269.657808
+          },
+          {
+            "country": "Spain",
+            "continent": "Europe",
+            "life": 80.941,
+            "gdp": 28821.0637
+          },
+          {
+            "country": "Sri Lanka",
+            "continent": "Asia",
+            "life": 72.396,
+            "gdp": 3970.095407
+          },
+          {
+            "country": "Sudan",
+            "continent": "Africa",
+            "life": 58.556,
+            "gdp": 2602.394995
+          },
+          {
+            "country": "Swaziland",
+            "continent": "Africa",
+            "life": 39.613,
+            "gdp": 4513.480643
+          },
+          {
+            "country": "Sweden",
+            "continent": "Europe",
+            "life": 80.884,
+            "gdp": 33859.74835
+          },
+          {
+            "country": "Switzerland",
+            "continent": "Europe",
+            "life": 81.701,
+            "gdp": 37506.41907
+          },
+          {
+            "country": "Syria",
+            "continent": "Asia",
+            "life": 74.143,
+            "gdp": 4184.548089
+          },
+          {
+            "country": "Taiwan",
+            "continent": "Asia",
+            "life": 78.4,
+            "gdp": 28718.27684
+          },
+          {
+            "country": "Tanzania",
+            "continent": "Africa",
+            "life": 52.517,
+            "gdp": 1107.482182
+          },
+          {
+            "country": "Thailand",
+            "continent": "Asia",
+            "life": 70.616,
+            "gdp": 7458.396327
+          },
+          {
+            "country": "Togo",
+            "continent": "Africa",
+            "life": 58.42,
+            "gdp": 882.9699438
+          },
+          {
+            "country": "Trinidad and Tobago",
+            "continent": "Americas",
+            "life": 69.819,
+            "gdp": 18008.50924
+          },
+          {
+            "country": "Tunisia",
+            "continent": "Africa",
+            "life": 73.923,
+            "gdp": 7092.923025
+          },
+          {
+            "country": "Turkey",
+            "continent": "Europe",
+            "life": 71.777,
+            "gdp": 8458.276384
+          },
+          {
+            "country": "Uganda",
+            "continent": "Africa",
+            "life": 51.542,
+            "gdp": 1056.380121
+          },
+          {
+            "country": "United Kingdom",
+            "continent": "Europe",
+            "life": 79.425,
+            "gdp": 33203.26128
+          },
+          {
+            "country": "United States",
+            "continent": "Americas",
+            "life": 78.242,
+            "gdp": 42951.65309
+          },
+          {
+            "country": "Uruguay",
+            "continent": "Americas",
+            "life": 76.384,
+            "gdp": 10611.46299
+          },
+          {
+            "country": "Venezuela",
+            "continent": "Americas",
+            "life": 73.747,
+            "gdp": 11415.80569
+          },
+          {
+            "country": "Vietnam",
+            "continent": "Asia",
+            "life": 74.249,
+            "gdp": 2441.576404
+          },
+          {
+            "country": "West Bank and Gaza",
+            "continent": "Asia",
+            "life": 73.422,
+            "gdp": 3025.349798
+          },
+          {
+            "country": "Yemen, Rep.",
+            "continent": "Asia",
+            "life": 62.698,
+            "gdp": 2280.769906
+          },
+          {
+            "country": "Zambia",
+            "continent": "Africa",
+            "life": 42.384,
+            "gdp": 1271.211593
+          },
+          {
+            "country": "Zimbabwe",
+            "continent": "Africa",
+            "life": 43.487,
+            "gdp": 469.7092981
+          }
+        ],
+        "regions": [
+          {
+            "name": "Andalucía",
+            "value": 8676713,
+            "x": 2,
+            "y": 3,
+            "label": "Andalucía"
+          },
+          {
+            "name": "Aragón",
+            "value": 1364621,
+            "x": 4,
+            "y": 1,
+            "label": "Aragón"
+          },
+          {
+            "name": "Asturias, Principado de",
+            "value": 1015128,
+            "x": 1,
+            "y": 0,
+            "label": "Asturias"
+          },
+          {
+            "name": "Balears, Illes",
+            "value": 1249844,
+            "x": 5,
+            "y": 2,
+            "label": "Illes Balears"
+          },
+          {
+            "name": "Canarias",
+            "value": 2258866,
+            "x": 0,
+            "y": 4,
+            "label": "Canarias"
+          },
+          {
+            "name": "Cantabria",
+            "value": 593623,
+            "x": 2,
+            "y": 0,
+            "label": "Cantabria"
+          },
+          {
+            "name": "Castilla y León",
+            "value": 2401221,
+            "x": 1,
+            "y": 1,
+            "label": "Castilla y León"
+          },
+          {
+            "name": "Castilla - La Mancha",
+            "value": 2126378,
+            "x": 3,
+            "y": 2,
+            "label": "Castilla-La Mancha"
+          },
+          {
+            "name": "Cataluña",
+            "value": 8124126,
+            "x": 5,
+            "y": 1,
+            "label": "Cataluña"
+          },
+          {
+            "name": "Comunitat Valenciana",
+            "value": 5425182,
+            "x": 4,
+            "y": 2,
+            "label": "C. Valenciana"
+          },
+          {
+            "name": "Extremadura",
+            "value": 1053345,
+            "x": 1,
+            "y": 3,
+            "label": "Extremadura"
+          },
+          {
+            "name": "Galicia",
+            "value": 2714741,
+            "x": 0,
+            "y": 1,
+            "label": "Galicia"
+          },
+          {
+            "name": "Madrid, Comunidad de",
+            "value": 7113886,
+            "x": 2,
+            "y": 2,
+            "label": "Madrid"
+          },
+          {
+            "name": "Murcia, Región de",
+            "value": 1586989,
+            "x": 4,
+            "y": 3,
+            "label": "Murcia"
+          },
+          {
+            "name": "Navarra, Comunidad Foral de",
+            "value": 683854,
+            "x": 4,
+            "y": 0,
+            "label": "Navarra"
+          },
+          {
+            "name": "País Vasco",
+            "value": 2242343,
+            "x": 3,
+            "y": 0,
+            "label": "País Vasco"
+          },
+          {
+            "name": "Rioja, La",
+            "value": 326803,
+            "x": 3,
+            "y": 1,
+            "label": "La Rioja"
+          },
+          {
+            "name": "Ceuta",
+            "value": 83567,
+            "x": 3,
+            "y": 4,
+            "label": "Ceuta"
+          },
+          {
+            "name": "Melilla",
+            "value": 87067,
+            "x": 4,
+            "y": 4,
+            "label": "Melilla"
+          }
+        ]
+      };
+      const palette= {
+        Africa:"#d47c39",Americas:"#187b91",Asia:"#7b67a5",Europe:"#23856d",Oceania:"#c75464"
+      };
+      function scatter() {
+        const W=900,H=470,m= {
+          l:82,r:22,t:25,b:68
+        },
+        pw=W-m.l-m.r,ph=H-m.t-m.b;
+        const minX=Math.log10(200),maxX=Math.log10(120000),minY=35,maxY=85;
+        const X=v=>m.l+(Math.log10(v)-minX)/(maxX-minX)*pw,Y=v=>m.t+(maxY-v)/(maxY-minY)*ph;
+        let s=[`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Diagrama de dispersión de PIB per cápita y esperanza de vida de 142 países en 2007">`];
+        for(let v=40;v<=80;v+=10) {
+          s.push(`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#e1e8eb"/><text x="${m.l-12}" y="${Y(v)+4}" text-anchor="end" fill="#52636f" font-size="12">${v}</text>`)
+        }
+        [300,1000,3000,10000,30000,100000].forEach(v=>{if(v>=200){s.push(`<line x1="${X(v)}" x2="${X(v)}" y1="${m.t}" y2="${H-m.b}" stroke="#edf1f3"/><text x="${X(v)}" y="${H-m.b+24}" text-anchor="middle" fill="#52636f" font-size="12">${v>=1000?(v/1000)+"k":v}</text>`)}});
+        s.push(`<line x1="${m.l}" x2="${W-m.r}" y1="${H-m.b}" y2="${H-m.b}" stroke="#8a9ba5"/><line x1="${m.l}" x2="${m.l}" y1="${m.t}" y2="${H-m.b}" stroke="#8a9ba5"/><text x="${m.l+pw/2}" y="${H-14}" text-anchor="middle" fill="#304653" font-size="14">PIB per cápita - dólares internacionales - escala logarítmica</text><text transform="translate(20 ${m.t+ph/2}) rotate(-90)" text-anchor="middle" fill="#304653" font-size="14">Esperanza de vida - años</text>`);
+        DATA.scatter.forEach(d=>{s.push(`<circle cx="${X(d.gdp).toFixed(2)}" cy="${Y(d.life).toFixed(2)}" r="4.4" fill="${palette[d.continent]}" fill-opacity=".77" stroke="white" stroke-width=".7"><title>${d.country} - ${d.continent}\nPIB per cápita: ${Math.round(d.gdp).toLocaleString('es-ES')}\nEsperanza de vida: ${d.life.toFixed(1)} años</title></circle>`) });
+        s.push(`</svg>`);
+        document.getElementById("scatterChart").innerHTML=s.join("");
+        document.getElementById("scatterLegend").innerHTML=Object.entries(palette).map(([n,c])=>`<span><i class="swatch" style="background:${c}"></i>${n}</span>`).join("")
+      }
+      function icon() {
+        const g=document.getElementById("iconGrid");
+        for(let i=0;i<100;i++) {
+          const d=document.createElement("div");
+          d.className="unit"+(i<57?" on":"");
+          d.innerHTML='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M27 4C16 4 8 7 5 14c-2 5 1 10 6 11 7 2 14-5 16-21Z" fill="currentColor"/><path d="M7 26c5-7 10-11 17-17" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>';
+          g.appendChild(d)
+        }
+      }
+      function tile() {
+        const m=document.getElementById("tileMap");
+        DATA.regions.forEach(r=>{const d=document.createElement("div"),t=r.value<500000?0:r.value<1000000?1:r.value<2000000?2:r.value<4000000?3:4;d.className="tile t"+t;d.style.gridColumn=(r.x+1);d.style.gridRow=(r.y+1);d.innerHTML=`<span>${r.label}</span><b>${(r.value/1e6).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} M</b>`;d.title=`${r.name}: ${r.value.toLocaleString('es-ES')} habitantes (2025)`;m.appendChild(d)})
+      }
+      scatter();
+      icon();
+      tile();
+    </script>
+  </body>
+</html>
